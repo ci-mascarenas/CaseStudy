@@ -1,0 +1,31 @@
+--- 
+- name: Configure OSPF
+  hosts: R1 
+  gather_facts: false 
+  connection: local 
+
+  tasks: 
+    - name: Add OSPF to R1
+      ios_command: 
+        commands:
+          - enable
+          - configure terminal
+          - router ospf 1 
+          - network 192.168.0.0 0.0.0.3 area 0 
+      register: ospf 
+
+- name: Configure OSPF
+  hosts: R2
+  gather_facts: false 
+  connection: local 
+
+  tasks: 
+    - name: Add OSPF to R2
+      ios_command: 
+        commands:
+          - enable
+          - configure terminal 
+          - router ospf 1 
+          - network 192.168.0.0 0.0.0.3 area 0 
+          - network 172.16.15.0 0.0.0.31 area 0
+      register: ospf

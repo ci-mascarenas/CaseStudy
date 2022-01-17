@@ -1,0 +1,31 @@
+--- 
+- name: Configure ACL
+  hosts: R1 
+  gather_facts: false 
+  connection: local 
+ 
+  tasks: 
+    - name: ACL R1
+      ios_command: 
+        commands: 
+          - configure terminal 
+          - access-list 100 permit tcp 192.168.169.0 0.0.0.255 192.168.168.0 0.0.0.0 
+          - access-list 100 permit udp 192.168.167.0 0.0.0.255 192.168.166.0 0.0.0.255 
+      register: acl 
+ 
+     
+- name: Configure ACL
+  hosts: R2 
+  gather_facts: false 
+  connection: local 
+ 
+  tasks: 
+    - name: ACL R2
+      ios_command: 
+        commands: 
+          - configure terminal 
+          - access-list 101 permit tcp 192.168.169.0 0.0.0.255 192.168.168.3 0.0.0.0 
+          - access-list 101 permit tcp 192.168.167.0 0.0.0.255 192.168.166.3 0.0.0.0 
+          - access-list 101 permit udp 192.168.167.0 0.0.0.255 192.168.166.3 0.0.0.255
+          - access-list 101 permit udp 192.168.169.0 0.0.0.255 192.168.168.3 0.0.0.255 
+      register: acl

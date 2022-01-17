@@ -1,0 +1,164 @@
+Building configuration...
+
+Current configuration : 2265 bytes
+!
+upgrade fpd auto
+version 12.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname R2
+!
+boot-start-marker
+boot-end-marker
+!
+logging message-counter syslog
+!
+no aaa new-model
+ip source-route
+no ip icmp rate-limit unreachable
+ip cef
+!
+!
+!
+!
+no ip domain lookup
+ip domain name casestudy.net
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+username cisco privilege 15 password 7 01100F175804575D72
+archive
+ log config
+  hidekeys
+! 
+!
+!
+!
+!
+ip tcp synwait-time 5
+ip ssh version 2
+!
+!
+!
+!
+interface Ethernet0/0
+ no ip address
+ shutdown
+ duplex auto
+!
+interface GigabitEthernet0/0
+ no ip address
+ shutdown
+ duplex full
+ speed 1000
+ media-type gbic
+ negotiation auto
+!
+interface GigabitEthernet1/0
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet2/0
+ ip address 192.168.0.2 255.255.255.252
+ negotiation auto
+!
+interface GigabitEthernet3/0
+ ip address 172.16.15.14 255.255.255.224
+ negotiation auto
+!
+interface GigabitEthernet4/0
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet5/0
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet6/0
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface Group-Async3
+ physical-layer async
+ no ip address
+ encapsulation slip
+!
+router ospf 1
+ log-adjacency-changes
+ network 172.16.15.0 0.0.0.31 area 0
+ network 192.168.0.0 0.0.0.3 area 0
+!
+ip forward-protocol nd
+ip route 0.0.0.0 0.0.0.0 192.168.0.1
+no ip http server
+no ip http secure-server
+!
+!
+!
+access-list 101 permit tcp 192.168.169.0 0.0.0.255 host 192.168.168.3
+access-list 101 permit tcp 192.168.167.0 0.0.0.255 host 192.168.166.3
+access-list 101 permit udp 192.168.167.0 0.0.0.255 192.168.166.0 0.0.0.255
+access-list 101 permit udp 192.168.169.0 0.0.0.255 192.168.168.0 0.0.0.255
+no cdp log mismatch duplex
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+gatekeeper
+ shutdown
+!
+banner motd ^CCase Study^C
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ login local
+ stopbits 1
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ logging synchronous
+ login local
+ transport input ssh
+line vty 5 14
+ logging synchronous
+ login local
+ transport input ssh
+!
+end
